@@ -1,61 +1,41 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Часть 1<br><br>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Нужно разработать приложение, которое будет показывать погоду для текущей геопозиции пользователя. <br>
 
-## About Laravel
+В приложении должен быть метод, который будет получать POST запросом координаты пользователя и дату, в ответ отдавать название города и погоду в формате JSON.<br>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Историю обращений и ответов нужно записывать в базу данных (SQL). <br><br><br>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Часть 2 <br><br>
+Предположим, что мы делаем модуль для системы логистики, который должен возвращать возможные интервалы доставки учитывая текущую дату и время, а также направление доставки. <br>
 
-## Learning Laravel
+Нужно разработать метод, который на вход получал бы дату, время и одно из направлений [Город_1, Город_2, Город_3] GET запросом. <br>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+В ответ необходимо отдать объект в формате JSON вида:<br>
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+<code>
+[
+‘date’=> ‘01.03.2021’,
+‘day’ => ‘Понедельник’, 
+‘title’ => ‘1 Марта’
+]
+</code>
+<br>
+содержащий в себе следующие 21 день после полученной даты и удовлетворяющий условиям: 
+<br>
+Если направление Город_1 или Город_2 <br>
+	- в ответе нужно оставить только понедельники, среды и пятницы. <br>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Если полученное время больше 16:00 и следующий день понедельник или среда, или пятница <br>
+- нужно убрать из объекта следующий день. <br>
 
-## Laravel Sponsors
+Если направление Город_3 <br>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+нужно оставить в объекте только вторники, четверги и субботы<br>
 
-### Premium Partners
+если полученное время больше 22:00 и следующий день вторник, или четверг, или суббота - нужно убрать из объекта следующий день<br>
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+Убрать из объекта текущий день<br>
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Убрать из объекта праздничные дни (константа - массив - [‘01.01.*’, ‘08.03.*’, ‘09.05.*’])<br>
