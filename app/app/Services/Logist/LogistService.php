@@ -54,7 +54,7 @@ Class LogistService
             return [
                 'date' => $item->format('d.m.Y'),
                 'day' => self::DAY_TRANSLATE[$item->format('l')],
-                'title' => self::MONTH_TRANSLATE[$item->format('m')],
+                'title' => $item->day.' '.self::MONTH_TRANSLATE[$item->format('m')],
             ];
         });
     }
