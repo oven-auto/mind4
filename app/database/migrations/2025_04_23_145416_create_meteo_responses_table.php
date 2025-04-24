@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('meteo_responses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('meteo_request_id')->references('id')->on('meteo_requests')->onDelete('cascade');
+            $table->string('city');
+            $table->string('temp');
             $table->timestamps();
         });
     }

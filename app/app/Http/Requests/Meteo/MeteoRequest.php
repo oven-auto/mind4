@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Meteo;
 
+use App\DTO\MeteoRequestDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MeteoRequest extends FormRequest
@@ -22,7 +23,15 @@ class MeteoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
+            'coordinates' => 'required|string', //просто обязательное поле, понятно что нужно провалидировать именно на то что бы это было координатами
+            'date' => 'required|date_format:d.m.Y'
         ];
+    }
+
+
+
+    public function getDTO()
+    {
+        return new MeteoRequestDTO($this->validated());
     }
 }

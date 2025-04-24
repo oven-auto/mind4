@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('meteo_requests', function (Blueprint $table) {
             $table->id();
+            $table->string('coordinates', 300);
+            $table->string('date_at');
             $table->timestamps();
         });
     }

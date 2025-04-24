@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Api\V1\Meteo;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Meteo\MeteoRequest;
 use App\Repositories\Meteo\MeteoRepository;
-use App\Services\Meteo\MeteoAPI;
 
 class MeteoController extends Controller
 {
     public function __construct(
         private MeteoRepository $repo,
-        private MeteoAPI $service,
     )
     {
         
@@ -21,10 +19,10 @@ class MeteoController extends Controller
 
     public function index(MeteoRequest $request)
     {
-        $data = $this->service->get();
+        $res = $this->repo->store($request->getDTO());
         
         return response()->json([
-            'data' => $data,
+            'data' => $res,
             'success' => 1
         ]);
     }
